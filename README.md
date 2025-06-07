@@ -31,7 +31,7 @@ Releases step by step for learning / easy following
 
 ## License
 
-Distributed under the GPL-3.0 [License][license-url].
+Distributed under the AGPL-3.0 [License][license-url].
 
 ## Contact
 
