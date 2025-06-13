@@ -1,0 +1,60 @@
+﻿@rendermode InteractiveAuto
+
+<!--
+    Navbar.razor
+    -------------
+    This component renders the main navigation bar for the Portfolio application.
+    It uses Bootstrap classes for styling and responsive behavior.
+    The navigation menu can be toggled open or closed on smaller screens.
+-->
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <!-- Brand/logo link -->
+        <a class="navbar-brand" href="#">Portfolio</a>
+        <!-- Toggler button for collapsing navigation on small screens -->
+        <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="@navMenuOpened.ToString().ToLower()"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapsible navigation menu -->
+        <div class="collapse navbar-collapse @(navMenuOpened ? "show" : "")" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item ms-2">
+                    <!-- Home navigation link; clicking also closes the menu -->
+                    <NavLink class="nav-link" href="/#" Match="NavLinkMatch.All" @onclick="ToggleNavMenu">
+                        <span class="bi bi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    /// <summary>
+    /// Tracks whether the navigation menu is open (expanded) or closed (collapsed).
+    /// </summary>
+    private bool navMenuOpened;
+
+    private bool dropdownOpened;
+
+    /// <summary>
+    /// Toggles the navigation menu open or closed.
+    /// Invoked when the navbar toggler button or a navigation link is clicked.
+    /// </summary>
+    /// <param name="args">The mouse event arguments.</param>
+    private void ToggleNavMenu(MouseEventArgs args)
+    {
+        navMenuOpened = !navMenuOpened;
+    }
+
+    private void ToggleDropdown(MouseEventArgs args)
+    {
+        if (dropdownOpened)
+            ToggleNavMenu(args);
+        dropdownOpened = !dropdownOpened;
+    }
+}
