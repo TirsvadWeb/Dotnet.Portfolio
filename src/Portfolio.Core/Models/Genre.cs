@@ -3,19 +3,19 @@ using Portfolio.Core.Interfaces;
 
 namespace Portfolio.Core.Models;
 
-public class GenreModel : IHasGuid
+public class Genre : IHasGuid
 {
     #region Properties
     [Key]
     public Guid Guid { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Please enter name..")]
     [StringLength(20)]
     public required string Name
     {
         get; set;
     }
     #endregion
-    public GenreModel()
+    public Genre()
     {
     }
 }
