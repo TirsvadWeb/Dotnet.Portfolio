@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Portfolio.Migrations
+namespace Portfolio.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -25,6 +25,20 @@ namespace Portfolio.Migrations
                     table.PrimaryKey("PK_Genre", x => x.Guid);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PortfolioItem",
+                columns: table => new
+                {
+                    Guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    SourceLink = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PortfolioItem", x => x.Guid);
+                });
+
             migrationBuilder.InsertData(
                 table: "Genre",
                 columns: new[] { "Guid", "Name" },
@@ -41,6 +55,9 @@ namespace Portfolio.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Genre");
+
+            migrationBuilder.DropTable(
+                name: "PortfolioItem");
         }
     }
 }
