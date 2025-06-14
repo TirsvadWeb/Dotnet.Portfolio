@@ -11,6 +11,7 @@ public class PortfolioDbContext : DbContext
     }
 
     public DbSet<Genre> Genre => Set<Genre>();
+    public DbSet<PortfolioItem> PortfolioItem => Set<PortfolioItem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
