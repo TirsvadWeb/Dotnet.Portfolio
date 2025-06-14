@@ -1,17 +1,42 @@
 ﻿@page "/genre/list"
-
+@attribute [StreamRendering]
+@using Portfolio.Core.Models
 @inject IGenreRepository _genreRepository
 
-@if (IsProcessing)
+@if (_genres == null)
 {
-    <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
-        <img src="/images/loading.gif" alt="loading" />
+    <div>
+        <img src="/images/loading.svg" alt="loading..." />
     </div>
 }
-
-
-<h3>GenreList</h3>
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Guid</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var genre in _genres)
+            {
+                <tr>
+                    <td>@genre.Guid</td>
+                    <td>@genre.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     private bool IsProcessing { get; set; } = true;
+
+    private IEnumerable<Core.Models.Genre>? _genres;
+       
+    protected override async Task OnInitializedAsync()
+    {
+        _genres = (await _genreRepository.GetAllAsync()).OrderBy(g => g.Name);
+    }
 }

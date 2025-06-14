@@ -10,12 +10,10 @@ public class Genre : IHasGuid
     public Guid Guid { get; set; }
     [Required(ErrorMessage = "Please enter name..")]
     [StringLength(20)]
-    public required string Name
-    {
-        get; set;
-    }
+    public string Name { get; set; }
     #endregion
     public Genre()
     {
+        Name = string.Empty;
     }
 }

@@ -2,30 +2,14 @@
 @rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Portfolio.Core.Models
-@using Portfolio.Repository
+@using Portfolio.Core.Repository
 @inject IGenreRepository _genreRepository
 
 <h3>Genre</h3>
 
 <div class="row">
     <div class="col-md-7">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Guid</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var genre in genres)
-                {
-                    <tr>
-                        <td>@genre.Guid</td>
-                        <td>@genre.Name</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <GenreList/>
     </div>
     <div class="col-md-5">
         <EditForm Model="newGenre" OnValidSubmit="AddGenre">

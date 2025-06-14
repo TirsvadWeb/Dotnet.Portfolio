@@ -8,11 +8,11 @@ using Portfolio.Data;
 
 #nullable disable
 
-namespace Portfolio.Migrations
+namespace Portfolio.Data.Migrations
 {
     [DbContext(typeof(PortfolioDbContext))]
-    [Migration("20250614083020_sqlite.local_migration_149")]
-    partial class sqlitelocal_migration_149
+    [Migration("20250614150414_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,31 @@ namespace Portfolio.Migrations
                             Guid = new Guid("0936dd59-5f27-4efd-b415-05f0bb817ee2"),
                             Name = "Blazor"
                         });
+                });
+
+            modelBuilder.Entity("Portfolio.Core.Models.PortfolioItem", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SourceLink")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("PortfolioItem");
                 });
 #pragma warning restore 612, 618
         }
