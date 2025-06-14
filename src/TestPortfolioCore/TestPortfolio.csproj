@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
+    <ProjectReference Include="..\Portfolio\Portfolio.csproj" />
   </ItemGroup>
 
   <ItemGroup>
