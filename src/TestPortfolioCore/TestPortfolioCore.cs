@@ -19,7 +19,7 @@ public sealed class GenreRepositoryTests
     public async Task AddAsync_ShouldAddGenre()
     {
         var repo = GenreRepository.Instance;
-        var genre = new GenreModel { Guid = Guid.NewGuid(), Name = "TestGenre" };
+        var genre = new Genre { Guid = Guid.NewGuid(), Name = "TestGenre" };
 
         await repo.AddAsync(genre);
 
@@ -32,8 +32,8 @@ public sealed class GenreRepositoryTests
     public async Task GetAsync_ShouldReturnAllGenres()
     {
         var repo = GenreRepository.Instance;
-        var genre1 = new GenreModel { Guid = Guid.NewGuid(), Name = "Genre1" };
-        var genre2 = new GenreModel { Guid = Guid.NewGuid(), Name = "Genre2" };
+        var genre1 = new Genre { Guid = Guid.NewGuid(), Name = "Genre1" };
+        var genre2 = new Genre { Guid = Guid.NewGuid(), Name = "Genre2" };
 
         await repo.AddAsync(genre1);
         await repo.AddAsync(genre2);
@@ -49,7 +49,7 @@ public sealed class GenreRepositoryTests
     public async Task UpdateAsync_ShouldUpdateGenre()
     {
         var repo = GenreRepository.Instance;
-        var genre = new GenreModel { Guid = Guid.NewGuid(), Name = "OldName" };
+        var genre = new Genre { Guid = Guid.NewGuid(), Name = "OldName" };
         await repo.AddAsync(genre);
 
         genre.Name = "NewName";
@@ -64,7 +64,7 @@ public sealed class GenreRepositoryTests
     public async Task DeleteAsync_ShouldRemoveGenre()
     {
         var repo = GenreRepository.Instance;
-        var genre = new GenreModel { Guid = Guid.NewGuid(), Name = "ToDelete" };
+        var genre = new Genre { Guid = Guid.NewGuid(), Name = "ToDelete" };
         await repo.AddAsync(genre);
 
         await repo.DeleteAsync(genre);
