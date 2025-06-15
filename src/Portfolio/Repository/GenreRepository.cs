@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.Core.Models;
+using Portfolio.Core.Repository.IRepository;
 using Portfolio.Data;
-using Portfolio.Repository.IRepository;
 
 namespace Portfolio.Repository;
 
@@ -46,11 +46,7 @@ public class GenreRepository : IGenreRepository
         var obj = await _db.Genre.FirstOrDefaultAsync(u => u.Guid == guid);
         if (obj == null)
         {
-            return new Genre
-            {
-                Guid = Guid.Empty,
-                Name = string.Empty // Provide a default value for the required 'Name' property
-            };
+            return new Genre();
         }
         return obj;
     }
