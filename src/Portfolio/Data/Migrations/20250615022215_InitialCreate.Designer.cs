@@ -11,7 +11,7 @@ using Portfolio.Data;
 namespace Portfolio.Data.Migrations
 {
     [DbContext(typeof(PortfolioDbContext))]
-    [Migration("20250614150414_InitialCreate")]
+    [Migration("20250615022215_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -63,6 +63,10 @@ namespace Portfolio.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.PrimitiveCollection<string>("GenreTags")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -76,6 +80,16 @@ namespace Portfolio.Data.Migrations
                     b.HasKey("Guid");
 
                     b.ToTable("PortfolioItem");
+
+                    b.HasData(
+                        new
+                        {
+                            Guid = new Guid("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
+                            Description = "PortfolioItem",
+                            GenreTags = "[\"A5AB66C1-30D9-4773-8366-DAD834AF6BBD\",\"0936DD59-5F27-4EFD-B415-05F0BB817EE2\"]",
+                            Name = "Portfolio Web application",
+                            SourceLink = "https://portfolio.tirsvad.dk/"
+                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,7 @@ public class Genre : IHasGuid
     [Key]
     public Guid Guid { get; set; }
     [Required(ErrorMessage = "Please enter name..")]
-    [StringLength(20)]
+    [StringLength(20, ErrorMessage = "Name must be 20 characters or less.")]
     public string Name { get; set; }
     #endregion
     public Genre()
