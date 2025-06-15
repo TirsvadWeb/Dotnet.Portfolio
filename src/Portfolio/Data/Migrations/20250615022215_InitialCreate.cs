@@ -32,7 +32,8 @@ namespace Portfolio.Data.Migrations
                     Guid = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    SourceLink = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false)
+                    SourceLink = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false),
+                    GenreTags = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,6 +49,11 @@ namespace Portfolio.Data.Migrations
                     { new Guid("a5ab66c1-30d9-4773-8366-dad834af6bbd"), "c#" },
                     { new Guid("e3642c4e-db08-47fa-8757-5a62ada67edb"), "Python" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "PortfolioItem",
+                columns: new[] { "Guid", "Description", "GenreTags", "Name", "SourceLink" },
+                values: new object[] { new Guid("0577fbae-b2c8-4807-bb32-3c6f3e80af29"), "PortfolioItem", "[\"A5AB66C1-30D9-4773-8366-DAD834AF6BBD\",\"0936DD59-5F27-4EFD-B415-05F0BB817EE2\"]", "Portfolio Web application", "https://portfolio.tirsvad.dk/" });
         }
 
         /// <inheritdoc />

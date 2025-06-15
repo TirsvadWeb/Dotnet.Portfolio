@@ -18,7 +18,7 @@ public class PortfolioItem : IHasGuid
     [RegularExpression(@"^https?:\/\/.+", ErrorMessage = "SourceLink must be a valid HTTP or HTTPS URL.")]
     public string SourceLink { get; set; }
 
-    IEnumerable<Guid> GenreTags { get; set; }
+    public IEnumerable<Guid> GenreTags { get; set; }
 
     public PortfolioItem()
     {

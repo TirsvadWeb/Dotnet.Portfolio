@@ -1,0 +1,44 @@
+﻿@page "/portfolioItem/edit"
+@inject IPortfolioItemRepository _portfolioItemRepository
+<h3>Portfolio Items</h3>
+<br/>
+<div class="row">
+    <div class="col-md-7">
+        <h4>Genre list</h4>
+        <PortfolioItemList @rendermode="InteractiveWebAssembly" />
+    </div>
+    <div class="col-md-5">
+        <h4>Portfolio item add form</h4>
+        <EditForm Model="_newPortfolioItem" OnValidSubmit="AddPortfolioItem">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-3" style="max-width: 400px; width: 100%;">
+                <label for="portfolioItemName" class="form-label">Portfolio Name</label>
+                <InputText id="portfolioItemName" class="form-control" @bind-Value="_newPortfolioItem.Name" maxlength="20" />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Genre</button>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    private IEnumerable<Core.Models.PortfolioItem> _portfolioItems = [];
+    private Core.Models.PortfolioItem _newPortfolioItem = new();
+
+    private async Task AddPortfolioItem()
+    {
+        var portfolioItem = new Core.Models.PortfolioItem
+            {
+                Guid = Guid.NewGuid(),
+                Name = _newPortfolioItem.Name,
+                Description = _newPortfolioItem.Description,
+                SourceLink = _newPortfolioItem.SourceLink,
+                GenreTags = _newPortfolioItem.GenreTags
+            };
+        var newObj = await _portfolioItemRepository.AddAsync(portfolioItem);
+        _portfolioItems = (await _portfolioItemRepository.GetAllAsync()).OrderBy(p => p.Name);
+
+        _newPortfolioItem = new Core.Models.PortfolioItem();
+    }
+}
