@@ -31,11 +31,12 @@
 
     <ItemGroup>
       <Folder Include="Components\Pages\Admin\" />
+      <Folder Include="Data\" />
     </ItemGroup>
 
     <ItemGroup>
       <None Update="Data\portfolio.db">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
