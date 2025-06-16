@@ -73,12 +73,13 @@
                 {
                     @foreach (var genre in genres)
                     {
+                        var g = genre;
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox"
-                                   value="@genre.Guid"
-                                   @onchange="e => OnGenreTagChanged(e, genre.Guid)"
-                                   checked="@newPortfolioItem.GenreTags?.Contains(genre.Guid) == true" />
-                            <label class="form-check-label">@genre.Name</label>
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   checked="@GetIsGenreSelected(g.Guid)"
+                                   @onchange="e => OnGenreTagChanged(e, g.Guid)" />
+                            <label class="form-check-label">@g.Name</label>
                         </div>
                     }
                 }
@@ -140,10 +141,15 @@
         StateHasChanged();
     }
 
+    private bool GetIsGenreSelected(Guid genreGuid)
+    {
+        return newPortfolioItem.GenreTags?.Contains(genreGuid) == true;
+    }
+
     private void OnGenreTagChanged(ChangeEventArgs e, Guid genreGuid)
     {
         var selected = newPortfolioItem.GenreTags?.ToList() ?? new List<Guid>();
-        bool isChecked = (bool)e.Value;
+        bool isChecked = e.Value != null; // "on" when checked, null when unchecked
 
         if (isChecked)
         {
