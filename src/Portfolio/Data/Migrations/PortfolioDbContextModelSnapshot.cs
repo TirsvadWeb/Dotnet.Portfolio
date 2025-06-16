@@ -41,7 +41,7 @@ namespace Portfolio.Data.Migrations
                         new
                         {
                             Guid = new Guid("a5ab66c1-30d9-4773-8366-dad834af6bbd"),
-                            Name = "c#"
+                            Name = "C#"
                         },
                         new
                         {
@@ -82,7 +82,7 @@ namespace Portfolio.Data.Migrations
                         new
                         {
                             Guid = new Guid("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
-                            Description = "PortfolioItem",
+                            Description = "A modern Blazor WebAssembly application for showcasing software projects and skills. Features include interactive project listings, technology tagging, and direct source code links. Designed for developers to present their work in a clean, responsive, and easily extensible format.",
                             GenreTags = "[\"A5AB66C1-30D9-4773-8366-DAD834AF6BBD\",\"0936DD59-5F27-4EFD-B415-05F0BB817EE2\"]",
                             Name = "Portfolio Web application",
                             SourceLink = "https://portfolio.tirsvad.dk/"

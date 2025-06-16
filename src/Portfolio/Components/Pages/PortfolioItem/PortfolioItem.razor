@@ -1,44 +1,166 @@
 ﻿@page "/portfolioItem/edit"
-@inject IPortfolioItemRepository _portfolioItemRepository
-<h3>Portfolio Items</h3>
-<br/>
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@using Portfolio.Core.Models
+@inject IPortfolioItemRepository portfolioItemRepository
+@inject IGenreRepository genreRepository
+
+<h3>Portfolio items</h3>
+
 <div class="row">
     <div class="col-md-7">
-        <h4>Genre list</h4>
-        <PortfolioItemList @rendermode="InteractiveWebAssembly" />
+        @if (portfolioItems == null)
+        {
+            <div>
+                <img src="/images/loading.svg" alt="loading..." />
+            </div>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Descriptions</th>
+                        <th>Source</th>
+                        <th>Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in portfolioItems)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Description</td>
+                            <td><a href="@item.SourceLink">@item.SourceLink</a></td>
+                            <td>@string.Join(", ", item.GenreTagAsName)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
     <div class="col-md-5">
-        <h4>Portfolio item add form</h4>
-        <EditForm Model="_newPortfolioItem" OnValidSubmit="AddPortfolioItem">
+        <EditForm Model="newPortfolioItem" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <div class="mb-3" style="max-width: 400px; width: 100%;">
-                <label for="portfolioItemName" class="form-label">Portfolio Name</label>
-                <InputText id="portfolioItemName" class="form-control" @bind-Value="_newPortfolioItem.Name" maxlength="20" />
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="newPortfolioItem.Name" />
+                <ValidationMessage For="@(() => newPortfolioItem.Name)" />
             </div>
-            <button type="submit" class="btn btn-primary">Add Genre</button>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="newPortfolioItem.Description" />
+                <ValidationMessage For="@(() => newPortfolioItem.Description)" />
+            </div>
+
+            <div class="mb-3">
+                <label for="sourceLink" class="form-label">Source Link</label>
+                <InputText id="sourceLink" class="form-control" @bind-Value="newPortfolioItem.SourceLink" />
+                <ValidationMessage For="@(() => newPortfolioItem.SourceLink)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tags</label>
+                @if (genres == null)
+                {
+                    <div>Loading tags...</div>
+                }
+                else
+                {
+                    @foreach (var genre in genres)
+                    {
+                        var g = genre;
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   checked="@GetIsGenreSelected(g.Guid)"
+                                   @onchange="e => OnGenreTagChanged(e, g.Guid)" />
+                            <label class="form-check-label">@g.Name</label>
+                        </div>
+                    }
+                }
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Portfolio Item</button>
         </EditForm>
     </div>
 </div>
 
 
+
 @code {
-    private IEnumerable<Core.Models.PortfolioItem> _portfolioItems = [];
-    private Core.Models.PortfolioItem _newPortfolioItem = new();
+    private IEnumerable<ViewModels.PortfolioItem> portfolioItems = [];
+    private Core.Models.PortfolioItem newPortfolioItem = new();
+    private List<Core.Models.Genre> genres;
 
-    private async Task AddPortfolioItem()
+    protected override async Task OnInitializedAsync()
     {
-        var portfolioItem = new Core.Models.PortfolioItem
-            {
-                Guid = Guid.NewGuid(),
-                Name = _newPortfolioItem.Name,
-                Description = _newPortfolioItem.Description,
-                SourceLink = _newPortfolioItem.SourceLink,
-                GenreTags = _newPortfolioItem.GenreTags
-            };
-        var newObj = await _portfolioItemRepository.AddAsync(portfolioItem);
-        _portfolioItems = (await _portfolioItemRepository.GetAllAsync()).OrderBy(p => p.Name);
+        genres = (await genreRepository.GetAllAsync()).ToList();
 
-        _newPortfolioItem = new Core.Models.PortfolioItem();
+        var portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
+        portfolioItems = (await Task.WhenAll(portfolioItemsCore
+            .Select(async p => new ViewModels.PortfolioItem
+            {
+                Name = p.Name,
+                Description = p.Description,
+                SourceLink = p.SourceLink,
+                GenreTagAsName = await GetGenreNames(p.GenreTags)
+            })))
+            .OrderBy(p => p.Name);
+    }
+
+    protected async Task<IEnumerable<string>> GetGenreNames(IEnumerable<Guid> guids)
+    {
+        var genres = await genreRepository.GetAllAsync();
+        return guids.Select(guid => genres.FirstOrDefault(g => g.Guid == guid)?.Name ?? string.Empty);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Ensure GenreTags is not null
+        newPortfolioItem.GenreTags ??= new List<Guid>();
+
+        await portfolioItemRepository.AddAsync(newPortfolioItem);
+        // Refresh the list
+        var portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
+        portfolioItems = (await Task.WhenAll(portfolioItemsCore
+            .Select(async p => new ViewModels.PortfolioItem
+            {
+                Name = p.Name,
+                Description = p.Description,
+                SourceLink = p.SourceLink,
+                GenreTagAsName = await GetGenreNames(p.GenreTags)
+            })))
+            .OrderBy(p => p.Name);
+
+        newPortfolioItem = new() { GenreTags = new List<Guid>() };
+        StateHasChanged();
+    }
+
+    private bool GetIsGenreSelected(Guid genreGuid)
+    {
+        return newPortfolioItem.GenreTags?.Contains(genreGuid) == true;
+    }
+
+    private void OnGenreTagChanged(ChangeEventArgs e, Guid genreGuid)
+    {
+        var selected = newPortfolioItem.GenreTags?.ToList() ?? new List<Guid>();
+        bool isChecked = e.Value != null; // "on" when checked, null when unchecked
+
+        if (isChecked)
+        {
+            if (!selected.Contains(genreGuid))
+                selected.Add(genreGuid);
+        }
+        else
+        {
+            selected.Remove(genreGuid);
+        }
+
+        newPortfolioItem.GenreTags = selected;
     }
 }
