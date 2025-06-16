@@ -8,6 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Components\Pages\Admin\**" />
+      <Content Remove="Components\Pages\Admin\**" />
+      <EmbeddedResource Remove="Components\Pages\Admin\**" />
+      <None Remove="Components\Pages\Admin\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\Portfolio.Client\Portfolio.Client.csproj" />
         <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.4.0" />
@@ -30,12 +37,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Pages\Admin\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="Data\portfolio.db">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
