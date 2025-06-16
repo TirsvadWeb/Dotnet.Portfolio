@@ -37,5 +37,20 @@ public class PortfolioDbContext : DbContext
                     ]
             }
             );
+
+        builder.Entity<PortfolioItem>().HasData(
+            new PortfolioItem
+            {
+                Guid = Guid.Parse("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
+                Name = "Portfolio Web application",
+                Description = $"{nameof(PortfolioItem)}",
+                GenreTags = new List<Guid>
+                {
+                    Guid.Parse("a5ab66c1-30d9-4773-8366-dad834af6bbd"),
+                    Guid.Parse("0936dd59-5f27-4efd-b415-05f0bb817ee2")
+                },
+                SourceLink = "https://portfolio.tirsvad.dk/"
+            }
+            );
     }
 }
