@@ -8,6 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Components\Pages\Admin\**" />
+      <Content Remove="Components\Pages\Admin\**" />
+      <EmbeddedResource Remove="Components\Pages\Admin\**" />
+      <None Remove="Components\Pages\Admin\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\Portfolio.Client\Portfolio.Client.csproj" />
         <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
         <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.4.0" />
@@ -27,11 +34,6 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Components\Pages\Admin\" />
-      <Folder Include="Data\" />
     </ItemGroup>
 
     <ItemGroup>
