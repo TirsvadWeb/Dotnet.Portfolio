@@ -36,4 +36,10 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Data\portfolio.db">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
