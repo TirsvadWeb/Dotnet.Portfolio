@@ -8,18 +8,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Components\Pages\Admin\**" />
-      <Content Remove="Components\Pages\Admin\**" />
-      <EmbeddedResource Remove="Components\Pages\Admin\**" />
-      <None Remove="Components\Pages\Admin\**" />
+      <Content Include="Properties\launchSettings.json" />
+      <Content Include="Properties\serviceDependencies.json" />
+      <Content Include="Properties\serviceDependencies.local.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Properties\serviceDependencies.local.json.user" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Portfolio.Client\Portfolio.Client.csproj" />
         <ProjectReference Include="..\Portfolio.Core\Portfolio.Core.csproj" />
-        <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.4.0" />
-        <PackageReference Include="Azure.Identity" Version="1.13.2" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.6" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,7 +32,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

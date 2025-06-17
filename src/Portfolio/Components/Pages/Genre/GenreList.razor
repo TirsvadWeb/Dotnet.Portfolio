@@ -1,6 +1,7 @@
 ﻿@page "/genre/list"
 @attribute [StreamRendering]
 @using Portfolio.Core.Models
+@using Portfolio.Core.Repository.IRepository
 @inject IGenreRepository _genreRepository
 
 @if (_genres == null)
