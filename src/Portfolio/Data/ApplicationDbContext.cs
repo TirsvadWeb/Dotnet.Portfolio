@@ -1,14 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Portfolio.Data;
 
-public class PortfolioDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
-    public PortfolioDbContext(DbContextOptions<PortfolioDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Core.Models.Genre> Genre => Set<Core.Models.Genre>();
     public DbSet<Core.Models.PortfolioItem> PortfolioItem => Set<Core.Models.PortfolioItem>();
     public DbSet<Core.Models.DeveloperInfo> DeveloperInfo => Set<Core.Models.DeveloperInfo>();
@@ -38,5 +34,16 @@ public class PortfolioDbContext : DbContext
                     ]
             }
         );
+
+        builder.Entity<Core.Models.DeveloperInfo>().HasData(
+            new Core.Models.DeveloperInfo
+            {
+                ID = 1,
+                Name = "Jens Tirsvad Nielsen",
+                Description = "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems. Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance. Proficient in Linux and Windows operating systems, managing environments for seamless software execution."
+
+            }
+            );
     }
+
 }

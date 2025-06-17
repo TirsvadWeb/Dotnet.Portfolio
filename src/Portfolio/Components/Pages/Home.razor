@@ -1,7 +1,8 @@
 ﻿@page "/"
 @attribute [StreamRendering]
 @using Microsoft.EntityFrameworkCore
-@inject Portfolio.Data.PortfolioDbContext Db
+@using Portfolio.Core.Repository.IRepository
+@inject Portfolio.Data.ApplicationDbContext Db
 @inject IPortfolioItemRepository portfolioItemRepository
 @inject IGenreRepository genreRepository
 
@@ -54,17 +55,6 @@
 
 <PageTitle>Home</PageTitle>
 
-@if (developer == null)
-{
-    <h1>My portfolio!</h1>
-}
-else
-{
-    <h1>Portfolio</h1>
-}
-
-
-
 <div class="row">
     @if (developer == null)
     {
@@ -74,15 +64,15 @@ else
     }
     else
     {
-        <div style="background-image: url('images/socialMediaBanner.png'); background-size: cover; background-position: center; border-radius: 8px; min-height: 180px; margin-bottom: 1.5rem; position: relative;">
+        <div style="background-image: url('images/socialMediaBanner.png'); background-size: cover; background-position: center; border-radius: 8px; min-height: 180px; margin-bottom: 1.5rem;">
             <div>
                 @if (!string.IsNullOrWhiteSpace(developer.ProfileImageUrl))
                 {
                     <img src="@developer.ProfileImageUrl" alt="Profile" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 2px 8px #0002;" />
                 }
-                <div style="position:absolute;background: rgba(255,255,255,0.8);margin: 1rem; padding: 1rem">
-                    <h2 style="margin:0;">@developer.Name</h2>
-                    <p style="margin:0;">@developer.Description</p>
+                <div style="background: rgba(255,255,255,0.8); margin: 1rem; padding: 1rem; max-height: 180px; width: fit-content; border-radius: 8px; overflow:auto">
+                    <h2 style="margin: 0;">@developer.Name</h2>
+                    <p style="margin: 0;">@developer.Description</p>
                 </div>
             </div>
         </div>
@@ -95,7 +85,7 @@ else
         {
             <div>
                 <img src="/images/loading.svg" alt="loading..." />
-            </div>            
+            </div>
         }
         else
         {
@@ -125,7 +115,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        developer = await Db.DeveloperInfo.FirstOrDefaultAsync();
+        developer = await Db.DeveloperInfo.FirstOrDefaultAsync() ?? new();
 
         var portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
         portfolioItems = (await Task.WhenAll(portfolioItemsCore

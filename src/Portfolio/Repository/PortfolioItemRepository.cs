@@ -7,9 +7,9 @@ namespace Portfolio.Repository;
 
 public class PortfolioItemRepository : IPortfolioItemRepository
 {
-    private readonly PortfolioDbContext _db;
+    private readonly ApplicationDbContext _db;
 
-    public PortfolioItemRepository(PortfolioDbContext db)
+    public PortfolioItemRepository(ApplicationDbContext db)
     {
         _db = db;
     }

@@ -10,7 +10,7 @@ namespace TestPortfolio;
 [TestClass]
 public sealed class GenreRepositoryTests
 {
-    private PortfolioDbContext _dbContext;
+    private ApplicationDbContext _dbContext;
     private GenreRepository _repository;
     private SqliteConnection _connection;
 
@@ -20,11 +20,11 @@ public sealed class GenreRepositoryTests
         _connection = new SqliteConnection("DataSource=:memory:");
         _connection.Open();
 
-        var options = new DbContextOptionsBuilder<PortfolioDbContext>()
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlite(_connection)
             .Options;
 
-        _dbContext = new PortfolioDbContext(options);
+        _dbContext = new ApplicationDbContext(options);
         _dbContext.Database.EnsureCreated();
         _repository = new GenreRepository(_dbContext);
     }
@@ -101,7 +101,7 @@ public sealed class GenreRepositoryTests
 [TestClass]
 public sealed class PortfolioItemRepositoryTests
 {
-    private PortfolioDbContext _dbContext;
+    private ApplicationDbContext _dbContext;
     private PortfolioItemRepository _repository;
     private SqliteConnection _connection;
 
@@ -111,11 +111,11 @@ public sealed class PortfolioItemRepositoryTests
         _connection = new SqliteConnection("DataSource=:memory:");
         _connection.Open();
 
-        var options = new DbContextOptionsBuilder<PortfolioDbContext>()
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlite(_connection)
             .Options;
 
-        _dbContext = new PortfolioDbContext(options);
+        _dbContext = new ApplicationDbContext(options);
         _dbContext.Database.EnsureCreated();
         _repository = new PortfolioItemRepository(_dbContext);
     }
@@ -152,7 +152,7 @@ public sealed class PortfolioItemRepositoryTests
 
         var PortfolioItems = await _repository.GetAllAsync();
 
-        Assert.AreEqual(2, System.Linq.Enumerable.Count(PortfolioItems));
+        Assert.AreEqual(3, System.Linq.Enumerable.Count(PortfolioItems));
     }
 
     [TestMethod]

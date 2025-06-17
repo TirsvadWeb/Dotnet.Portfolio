@@ -1,4 +1,8 @@
-﻿<!--
+﻿@implements IDisposable
+
+@inject NavigationManager NavigationManager
+
+<!--
     Navbar.razor
     -------------
     This component renders the main navigation bar for the Portfolio application.
@@ -19,22 +23,85 @@
                         <span class="bi bi-home" aria-hidden="true"></span> Home
                     </NavLink>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Admin
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <NavLink class="dropdown-item" href="/genre/edit" Match="NavLinkMatch.All">
-                                Genre tags
-                            </NavLink>
-                            <NavLink class="dropdown-item" href="/portfolioItem/edit" Match="NavLinkMatch.All">
-                                Portfolio items
-                            </NavLink>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Data
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <NavLink class="dropdown-item" href="/genre/edit" Match="NavLinkMatch.All">
+                                        Genre tags
+                                    </NavLink>
+                                    <NavLink class="dropdown-item" href="/portfolioItem/edit" Match="NavLinkMatch.All">
+                                        Portfolio items
+                                    </NavLink>
+                                </li>
+                            </ul>
                         </li>
-                    </ul>
-                </li>
+                    </Authorized>
+                </AuthorizeView>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="bi bi bi-person" aria-hidden="true"></span> Account
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <div class="nav-item px-3">
+                                        <NavLink class="nav-link" href="Account/Manage" Match="NavLinkMatch.All">
+                                            <span class="bi bi bi-person" aria-hidden="true"></span> @context.User.Identity?.Name
+                                        </NavLink>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <div class="nav-item px-3">
+                                        <form action="Account/Logout" method="post">
+                                            <AntiforgeryToken />
+                                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                            <button type="submit" class="nav-link">
+                                                <span class="bi bi bi-door-closed" aria-hidden="true"></span> Logout
+                                            </button>
+                                        </form>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="Account/Login" Match="NavLinkMatch.All">
+                                    <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                                </NavLink>
+                            </div>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
             </ul>
         </div>
     </div>
 </nav>
+
+@code {
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
