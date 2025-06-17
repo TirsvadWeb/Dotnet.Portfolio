@@ -11,6 +11,7 @@ public class PortfolioDbContext : DbContext
 
     public DbSet<Core.Models.Genre> Genre => Set<Core.Models.Genre>();
     public DbSet<Core.Models.PortfolioItem> PortfolioItem => Set<Core.Models.PortfolioItem>();
+    public DbSet<Core.Models.DeveloperInfo> DeveloperInfo => Set<Core.Models.DeveloperInfo>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -36,6 +37,6 @@ public class PortfolioDbContext : DbContext
                     Guid.Parse("0936dd59-5f27-4efd-b415-05f0bb817ee2")
                     ]
             }
-            );
+        );
     }
 }

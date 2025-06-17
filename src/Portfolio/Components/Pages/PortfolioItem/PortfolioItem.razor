@@ -95,7 +95,7 @@
 @code {
     private IEnumerable<ViewModels.PortfolioItem> portfolioItems = [];
     private Core.Models.PortfolioItem newPortfolioItem = new();
-    private List<Core.Models.Genre> genres;
+    private List<Core.Models.Genre> genres = [];
 
     protected override async Task OnInitializedAsync()
     {

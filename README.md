@@ -89,6 +89,27 @@ You can easily tailor this portfolio to reflect your own projects, skills, and p
    - If you are comfortable with C#, you can add new components, services, or models in the `Components/`, `Shared/`, or `Data/` folders to extend the site's functionality.
    - Update routing in `App.razor` or `Routes.razor` if you add or remove pages.
 
+6. **Social Media Banner**  
+   - The portfolio supports a customizable social media banner at the top of the home page.
+   - To change the banner, you have two options:
+
+      1. **Replace the static image file:**  
+         - Go to `Portfolio/wwwroot/images/` in your project.
+         - Replace the file named `socialMediaBanner.png` with your own banner image.
+         - Make sure your new image has the same filename (`socialMediaBanner.png`) or update the image path in your code if you use a different name.
+
+      2. **Use a dynamic image from the database:**  
+         - Update the `SocialBannerUrl` property in the `DeveloperInfo` table of your database to point to your desired image URL (this can be an external URL or a path to an image in your `wwwroot/images` folder, e.g., `/images/yourBanner.png`).
+         - The application will automatically use this URL as the banner if it is set and not empty.
+         - You can update this value using a database tool (like SQLite Browser for SQLite) or by adding an admin/edit page in your Blazor app to manage your profile information.
+
+  **Note:**  
+  - If both the static file and the `SocialBannerUrl` are set, the application will prioritize the `SocialBannerUrl` from the database if your code is set up to do so.
+  - For best results, use a wide image (recommended size: 1200x300px or similar).
+  - You can also update the banner dynamically by setting the `SocialBannerUrl` property in the `DeveloperInfo` data model (if supported in your database).
+  - The banner is displayed as a background with optional transparency, and your profile image and details are overlaid on top.
+  - For best results, use a wide image (recommended size: 1200x300px or similar).
+
 After making your changes, rebuild and run the project to see your personalized portfolio in action.
 
 ---
