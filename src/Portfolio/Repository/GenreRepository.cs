@@ -7,9 +7,9 @@ namespace Portfolio.Repository;
 
 public class GenreRepository : IGenreRepository
 {
-    private readonly PortfolioDbContext _db;
+    private readonly ApplicationDbContext _db;
 
-    public GenreRepository(PortfolioDbContext db)
+    public GenreRepository(ApplicationDbContext db)
     {
         _db = db;
     }

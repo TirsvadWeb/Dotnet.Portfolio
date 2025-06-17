@@ -1,6 +1,6 @@
 ﻿namespace Portfolio.Core.Interfaces;
 
-public interface IHasGuid
+internal interface IHasGuid
 {
     Guid Guid { get; }
 }
