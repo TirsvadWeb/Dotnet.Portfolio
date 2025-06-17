@@ -1,4 +1,9 @@
 ﻿@page "/"
+@attribute [StreamRendering]
+@using Microsoft.EntityFrameworkCore
+@inject Portfolio.Data.PortfolioDbContext Db
+@inject IPortfolioItemRepository portfolioItemRepository
+@inject IGenreRepository genreRepository
 
 <style>
     .card-container {
@@ -49,40 +54,94 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>My portfolio!</h1>
+@if (developer == null)
+{
+    <h1>My portfolio!</h1>
+}
+else
+{
+    <h1>Portfolio</h1>
+}
 
-<p>Here is a sample of project I have done as developer.</p>
 
 
-<div class="card-container">
-    @foreach (var item in portfolioItems)
+<div class="row">
+    @if (developer == null)
     {
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <strong>@item.Name</strong>
-                </div>
-                <div class="flip-card-back">
-                    @($"{item.Name} - {string.Join(", ", item.GenreTagAsName)}")
+        <div>
+            <img src="/images/loading.svg" alt="loading..." />
+        </div>
+    }
+    else
+    {
+        <div style="background-image: url('images/socialMediaBanner.png'); background-size: cover; background-position: center; border-radius: 8px; min-height: 180px; margin-bottom: 1.5rem; position: relative;">
+            <div>
+                @if (!string.IsNullOrWhiteSpace(developer.ProfileImageUrl))
+                {
+                    <img src="@developer.ProfileImageUrl" alt="Profile" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 2px 8px #0002;" />
+                }
+                <div style="position:absolute;background: rgba(255,255,255,0.8);margin: 1rem; padding: 1rem">
+                    <h2 style="margin:0;">@developer.Name</h2>
+                    <p style="margin:0;">@developer.Description</p>
                 </div>
             </div>
         </div>
     }
 </div>
-
-@* Example data for demonstration *@
-@code {
-    private List<Portfolio.ViewModels.PortfolioItem> portfolioItems = new()
-    {
-        new Portfolio.ViewModels.PortfolioItem
+<div class="row">
+    <div class="col-md-12">
+        <p>Here is a sample of project I have done as developer.</p>
+        @if (portfolioItems == null)
         {
-            Name = "Sample Project",
-            GenreTagAsName = new List<string> { "Web", "Blazor" }
-        },
-        new Portfolio.ViewModels.PortfolioItem
-        {
-            Name = "Another Project",
-            GenreTagAsName = new List<string> { "API", "Cloud" }
+            <div>
+                <img src="/images/loading.svg" alt="loading..." />
+            </div>            
         }
-    };
+        else
+        {
+            <div class="card-container">
+                @foreach (var item in portfolioItems)
+                {
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <strong>@item.Name</strong>
+                            </div>
+                            <div class="flip-card-back">
+                                @($"{item.Name} - {string.Join(", ", item.GenreTagAsName)}")
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    private Portfolio.Core.Models.DeveloperInfo? developer;
+    private IEnumerable<ViewModels.PortfolioItem>? portfolioItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        developer = await Db.DeveloperInfo.FirstOrDefaultAsync();
+
+        var portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
+        portfolioItems = (await Task.WhenAll(portfolioItemsCore
+            .Select(async p => new ViewModels.PortfolioItem
+            {
+                Name = p.Name,
+                Description = p.Description,
+                SourceLink = p.SourceLink,
+                GenreTagAsName = await GetGenreNames(p.GenreTags)
+            })))
+            .OrderBy(p => p.Name);
+    }
+
+    protected async Task<IEnumerable<string>> GetGenreNames(IEnumerable<Guid> guids)
+    {
+        var genres = await genreRepository.GetAllAsync();
+        return guids.Select(guid => genres.FirstOrDefault(g => g.Guid == guid)?.Name ?? string.Empty);
+    }
 }
