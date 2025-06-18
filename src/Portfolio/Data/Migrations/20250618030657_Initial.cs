@@ -56,8 +56,7 @@ namespace Portfolio.Data.Migrations
                 name: "DeveloperInfo",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
                     ProfileImageUrl = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
@@ -65,26 +64,26 @@ namespace Portfolio.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeveloperInfo", x => x.ID);
+                    table.PrimaryKey("PK_DeveloperInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Genre",
                 columns: table => new
                 {
-                    Guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genre", x => x.Guid);
+                    table.PrimaryKey("PK_Genre", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PortfolioItem",
                 columns: table => new
                 {
-                    Guid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     SourceLink = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false),
@@ -92,7 +91,7 @@ namespace Portfolio.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PortfolioItem", x => x.Guid);
+                    table.PrimaryKey("PK_PortfolioItem", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,13 +201,18 @@ namespace Portfolio.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "875a25fd-216e-48c1-bb72-99559cbd1bed", 0, "40bf735b-6e37-44d0-a6e5-4dd8d58e990b", "jenstirsvad@gmail.com", true, true, null, "JENSTIRSVAD@GMAIL.COM", "JENSTIRSVAD@GMAIL.COM", "AQAAAAIAAYagAAAAEAXfEmM1tC+eQ69Lf2KbruY7dC/o/aA0bVrguuazN+CkIq8sqMivBeoWyZ7f/2sYUg==", null, false, "NEVEOGGL4VPHGJ5M5SGEKJVCARFYRFYQ", false, "jenstirsvad@gmail.com" });
+
+            migrationBuilder.InsertData(
                 table: "DeveloperInfo",
-                columns: new[] { "ID", "Description", "Name", "ProfileImageUrl", "SocialBannerUrl" },
-                values: new object[] { 1, "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems. Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance. Proficient in Linux and Windows operating systems, managing environments for seamless software execution.", "Jens Tirsvad Nielsen", null, null });
+                columns: new[] { "Id", "Description", "Name", "ProfileImageUrl", "SocialBannerUrl" },
+                values: new object[] { new Guid("f1fbbdf6-af0e-43a8-935e-7d59e091a388"), "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems. Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance. Proficient in Linux and Windows operating systems, managing environments for seamless software execution.", "Jens Tirsvad Nielsen", null, null });
 
             migrationBuilder.InsertData(
                 table: "Genre",
-                columns: new[] { "Guid", "Name" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { new Guid("0936dd59-5f27-4efd-b415-05f0bb817ee2"), "Blazor" },
@@ -218,7 +222,7 @@ namespace Portfolio.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "PortfolioItem",
-                columns: new[] { "Guid", "Description", "GenreTags", "Name", "SourceLink" },
+                columns: new[] { "Id", "Description", "GenreTags", "Name", "SourceLink" },
                 values: new object[] { new Guid("0577fbae-b2c8-4807-bb32-3c6f3e80af29"), "A modern Blazor WebAssembly application for showcasing software projects and skills. Features include interactive project listings, technology tagging, and direct source code links. Designed for developers to present their work in a clean, responsive, and easily extensible format.", "[\"A5AB66C1-30D9-4773-8366-DAD834AF6BBD\",\"0936DD59-5F27-4EFD-B415-05F0BB817EE2\"]", "Portfolio Web application", "https://portfolio.tirsvad.dk/" });
 
             migrationBuilder.CreateIndex(

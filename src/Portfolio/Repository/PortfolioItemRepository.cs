@@ -16,9 +16,9 @@ public class PortfolioItemRepository : IPortfolioItemRepository
 
     public async Task<PortfolioItem> AddAsync(PortfolioItem obj)
     {
-        while (await _db.PortfolioItem.AnyAsync(g => g.Guid == obj.Guid))
+        while (await _db.PortfolioItem.AnyAsync(g => g.Id == obj.Id))
         {
-            obj.Guid = Guid.NewGuid();
+            obj.Id = Guid.NewGuid();
         }
         await _db.PortfolioItem.AddAsync(obj);
         await _db.SaveChangesAsync();
@@ -27,7 +27,7 @@ public class PortfolioItemRepository : IPortfolioItemRepository
 
     public async Task<bool> DeleteAsync(Guid guid)
     {
-        var obj = await _db.PortfolioItem.FirstOrDefaultAsync(g => g.Guid == guid);
+        var obj = await _db.PortfolioItem.FirstOrDefaultAsync(g => g.Id == guid);
         if (obj != null)
         {
             _db.PortfolioItem.Remove(obj);
@@ -43,7 +43,7 @@ public class PortfolioItemRepository : IPortfolioItemRepository
 
     public async Task<PortfolioItem> GetAsync(Guid guid)
     {
-        var obj = await _db.PortfolioItem.FirstOrDefaultAsync(u => u.Guid == guid);
+        var obj = await _db.PortfolioItem.FirstOrDefaultAsync(u => u.Id == guid);
         if (obj == null)
         {
             return new PortfolioItem();
@@ -53,7 +53,7 @@ public class PortfolioItemRepository : IPortfolioItemRepository
 
     public async Task<PortfolioItem> UpdateAsync(PortfolioItem obj)
     {
-        var objFromDb = await _db.PortfolioItem.FirstOrDefaultAsync(u => u.Guid == obj.Guid);
+        var objFromDb = await _db.PortfolioItem.FirstOrDefaultAsync(u => u.Id == obj.Id);
         if (objFromDb is not null)
         {
             objFromDb.Name = obj.Name;
@@ -66,6 +66,6 @@ public class PortfolioItemRepository : IPortfolioItemRepository
 
     public async Task<bool> ExistsAsync(Guid guid)
     {
-        return await _db.PortfolioItem.AnyAsync(g => g.Guid == guid);
+        return await _db.PortfolioItem.AnyAsync(g => g.Id == guid);
     }
 }

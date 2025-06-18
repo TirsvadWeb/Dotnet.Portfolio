@@ -1,6 +1,8 @@
 ﻿@page "/portfolioItem/edit"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
 @using Portfolio.Core.Models
 @using Portfolio.Core.Repository.IRepository
 @inject IPortfolioItemRepository portfolioItemRepository
@@ -78,8 +80,8 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   checked="@GetIsGenreSelected(g.Guid)"
-                                   @onchange="e => OnGenreTagChanged(e, g.Guid)" />
+                                   checked="@GetIsGenreSelected(g.Id)"
+                                   @onchange="e => OnGenreTagChanged(e, g.Id)" />
                             <label class="form-check-label">@g.Name</label>
                         </div>
                     }
@@ -90,8 +92,6 @@
         </EditForm>
     </div>
 </div>
-
-
 
 @code {
     private IEnumerable<ViewModels.PortfolioItem> portfolioItems = [];
@@ -117,7 +117,7 @@
     protected async Task<IEnumerable<string>> GetGenreNames(IEnumerable<Guid> guids)
     {
         var genres = await genreRepository.GetAllAsync();
-        return guids.Select(guid => genres.FirstOrDefault(g => g.Guid == guid)?.Name ?? string.Empty);
+        return guids.Select(guid => genres.FirstOrDefault(g => g.Id == guid)?.Name ?? string.Empty);
     }
 
     private async Task HandleValidSubmit()

@@ -6,8 +6,8 @@ namespace Portfolio.Core.Models;
 public class Genre : IHasGuid
 {
     #region Properties
-    [Key]
-    public Guid Guid { get; set; }
+    public Guid Id { get; set; }
+
     [Required(ErrorMessage = "Please enter name..")]
     [StringLength(20, ErrorMessage = "Name must be 20 characters or less.")]
     public string Name { get; set; }

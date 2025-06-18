@@ -5,8 +5,7 @@ namespace Portfolio.Core.Models;
 
 public class PortfolioItem : IHasGuid
 {
-    [Key]
-    public Guid Guid { get; set; }
+    public Guid Id { get; set; }
 
     [Required(ErrorMessage = "Please enter name..")]
     [StringLength(50)]

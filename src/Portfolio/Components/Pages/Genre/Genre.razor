@@ -1,5 +1,7 @@
 ﻿@page "/genre/edit"
 @rendermode InteractiveServer
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
 @using System.ComponentModel.DataAnnotations
 @using Portfolio.Core.Repository.IRepository
 @using Portfolio.Repository
@@ -73,7 +75,7 @@
         {
             var genre = new Core.Models.Genre
             {
-                Guid = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Name = newGenre.Name
             };
             var newObj = await _genreRepository.AddAsync(genre);

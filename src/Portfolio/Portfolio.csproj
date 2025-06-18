@@ -39,9 +39,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Data\portfolio.db">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <Folder Include="Factories\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Data\ApplicationUser.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
     </ItemGroup>
 
 </Project>

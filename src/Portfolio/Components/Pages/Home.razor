@@ -56,7 +56,7 @@
 <PageTitle>Home</PageTitle>
 
 <div class="row">
-    @if (developer == null)
+    @if (portfolioPerson == null)
     {
         <div>
             <img src="/images/loading.svg" alt="loading..." />
@@ -66,13 +66,13 @@
     {
         <div style="background-image: url('images/socialMediaBanner.png'); background-size: cover; background-position: center; border-radius: 8px; min-height: 180px; margin-bottom: 1.5rem;">
             <div>
-                @if (!string.IsNullOrWhiteSpace(developer.ProfileImageUrl))
+                @if (!string.IsNullOrWhiteSpace(portfolioPerson.ProfileImageUrl))
                 {
-                    <img src="@developer.ProfileImageUrl" alt="Profile" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 2px 8px #0002;" />
+                    <img src="@portfolioPerson.ProfileImageUrl" alt="Profile" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 2px 8px #0002;" />
                 }
                 <div style="background: rgba(255,255,255,0.8); margin: 1rem; padding: 1rem; max-height: 180px; width: fit-content; border-radius: 8px; overflow:auto">
-                    <h2 style="margin: 0;">@developer.Name</h2>
-                    <p style="margin: 0;">@developer.Description</p>
+                    <h2 style="margin: 0;">@portfolioPerson.Name</h2>
+                    <p style="margin: 0;">@portfolioPerson.Description</p>
                 </div>
             </div>
         </div>
@@ -108,14 +108,13 @@
     </div>
 </div>
 
-
 @code {
-    private Portfolio.Core.Models.DeveloperInfo? developer;
+    private Portfolio.Core.Models.PortfolioPerson? portfolioPerson;
     private IEnumerable<ViewModels.PortfolioItem>? portfolioItems;
 
     protected override async Task OnInitializedAsync()
     {
-        developer = await Db.DeveloperInfo.FirstOrDefaultAsync() ?? new();
+        portfolioPerson = await Db.DeveloperInfo.FirstOrDefaultAsync() ?? new();
 
         var portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
         portfolioItems = (await Task.WhenAll(portfolioItemsCore
@@ -132,6 +131,6 @@
     protected async Task<IEnumerable<string>> GetGenreNames(IEnumerable<Guid> guids)
     {
         var genres = await genreRepository.GetAllAsync();
-        return guids.Select(guid => genres.FirstOrDefault(g => g.Guid == guid)?.Name ?? string.Empty);
+        return guids.Select(guid => genres.FirstOrDefault(g => g.Id == guid)?.Name ?? string.Empty);
     }
 }

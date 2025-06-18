@@ -2,5 +2,5 @@
 
 internal interface IHasGuid
 {
-    Guid Guid { get; }
+    Guid Id { get; }
 }

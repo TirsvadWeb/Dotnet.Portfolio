@@ -56,6 +56,6 @@ else
     protected async Task<IEnumerable<string>> GetGenreName(IEnumerable<Guid> guids)
     {
         var genres = await _genreRepository.GetAllAsync();
-        return guids.Select(guid => genres.FirstOrDefault(g => g.Guid == guid)?.Name ?? string.Empty);
+        return guids.Select(guid => genres.FirstOrDefault(g => g.Id == guid)?.Name ?? string.Empty);
     }
 }

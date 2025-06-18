@@ -39,19 +39,19 @@ public sealed class GenreRepositoryTests
     [TestMethod]
     public async Task AddAsync_AddsGenre()
     {
-        var genre = new Genre { Guid = Guid.NewGuid(), Name = "TestGenre" };
+        var genre = new Genre { Id = Guid.NewGuid(), Name = "TestGenre" };
         var result = await _repository.AddAsync(genre);
 
         Assert.IsNotNull(result);
         Assert.AreEqual("TestGenre", result.Name);
-        Assert.IsTrue(await _dbContext.Genre.AnyAsync(g => g.Guid == genre.Guid));
+        Assert.IsTrue(await _dbContext.Genre.AnyAsync(g => g.Id == genre.Id));
     }
 
     [TestMethod]
     public async Task GetAllAsync_ReturnsGenres()
     {
-        await _repository.AddAsync(new Genre { Guid = Guid.NewGuid(), Name = "Genre1" });
-        await _repository.AddAsync(new Genre { Guid = Guid.NewGuid(), Name = "Genre2" });
+        await _repository.AddAsync(new Genre { Id = Guid.NewGuid(), Name = "Genre1" });
+        await _repository.AddAsync(new Genre { Id = Guid.NewGuid(), Name = "Genre2" });
 
         var genres = await _repository.GetAllAsync();
 
@@ -61,18 +61,18 @@ public sealed class GenreRepositoryTests
     [TestMethod]
     public async Task DeleteAsync_RemovesGenre()
     {
-        var genre = await _repository.AddAsync(new Genre { Guid = Guid.NewGuid(), Name = "ToDelete" });
-        var deleted = await _repository.DeleteAsync(genre.Guid);
+        var genre = await _repository.AddAsync(new Genre { Id = Guid.NewGuid(), Name = "ToDelete" });
+        var deleted = await _repository.DeleteAsync(genre.Id);
 
         Assert.IsTrue(deleted);
-        Assert.IsFalse(await _dbContext.Genre.AnyAsync(g => g.Guid == genre.Guid));
+        Assert.IsFalse(await _dbContext.Genre.AnyAsync(g => g.Id == genre.Id));
     }
 
     [TestMethod]
     public async Task ExistsAsync_ReturnsTrueIfExists()
     {
-        var genre = await _repository.AddAsync(new Genre { Guid = Guid.NewGuid(), Name = "Exists" });
-        var exists = await _repository.ExistsAsync(genre.Guid);
+        var genre = await _repository.AddAsync(new Genre { Id = Guid.NewGuid(), Name = "Exists" });
+        var exists = await _repository.ExistsAsync(genre.Id);
 
         Assert.IsTrue(exists);
     }
@@ -80,8 +80,8 @@ public sealed class GenreRepositoryTests
     [TestMethod]
     public async Task GetAsync_ReturnsGenre()
     {
-        var genre = await _repository.AddAsync(new Genre { Guid = Guid.NewGuid(), Name = "GetMe" });
-        var result = await _repository.GetAsync(genre.Guid);
+        var genre = await _repository.AddAsync(new Genre { Id = Guid.NewGuid(), Name = "GetMe" });
+        var result = await _repository.GetAsync(genre.Id);
 
         Assert.IsNotNull(result);
         Assert.AreEqual("GetMe", result.Name);
@@ -90,7 +90,7 @@ public sealed class GenreRepositoryTests
     [TestMethod]
     public async Task UpdateAsync_UpdatesGenre()
     {
-        var genre = await _repository.AddAsync(new Genre { Guid = Guid.NewGuid(), Name = "OldName" });
+        var genre = await _repository.AddAsync(new Genre { Id = Guid.NewGuid(), Name = "OldName" });
         genre.Name = "NewName";
         var updated = await _repository.UpdateAsync(genre);
 
@@ -130,12 +130,12 @@ public sealed class PortfolioItemRepositoryTests
     [TestMethod]
     public async Task AddAsync_AddsPortfolioItem()
     {
-        var PortfolioItem = new PortfolioItem { Guid = Guid.NewGuid(), Name = "TestPortfolioItem" };
+        var PortfolioItem = new PortfolioItem { Id = Guid.NewGuid(), Name = "TestPortfolioItem" };
         var result = await _repository.AddAsync(PortfolioItem);
 
         Assert.IsNotNull(result);
         Assert.AreEqual("TestPortfolioItem", result.Name);
-        Assert.IsTrue(await _dbContext.PortfolioItem.AnyAsync(g => g.Guid == PortfolioItem.Guid));
+        Assert.IsTrue(await _dbContext.PortfolioItem.AnyAsync(g => g.Id == PortfolioItem.Id));
     }
 
     [TestMethod]
@@ -143,12 +143,12 @@ public sealed class PortfolioItemRepositoryTests
     {
         await _repository.AddAsync(new PortfolioItem
         {
-            Guid = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             Name = "PortfolioItem1",
             Description = "Description",
             SourceLink = "http://localhost"
         });
-        await _repository.AddAsync(new PortfolioItem { Guid = Guid.NewGuid(), Name = "PortfolioItem2" });
+        await _repository.AddAsync(new PortfolioItem { Id = Guid.NewGuid(), Name = "PortfolioItem2" });
 
         var PortfolioItems = await _repository.GetAllAsync();
 
@@ -158,18 +158,18 @@ public sealed class PortfolioItemRepositoryTests
     [TestMethod]
     public async Task DeleteAsync_RemovesPortfolioItem()
     {
-        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Guid = Guid.NewGuid(), Name = "ToDelete" });
-        var deleted = await _repository.DeleteAsync(PortfolioItem.Guid);
+        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Id = Guid.NewGuid(), Name = "ToDelete" });
+        var deleted = await _repository.DeleteAsync(PortfolioItem.Id);
 
         Assert.IsTrue(deleted);
-        Assert.IsFalse(await _dbContext.PortfolioItem.AnyAsync(g => g.Guid == PortfolioItem.Guid));
+        Assert.IsFalse(await _dbContext.PortfolioItem.AnyAsync(g => g.Id == PortfolioItem.Id));
     }
 
     [TestMethod]
     public async Task ExistsAsync_ReturnsTrueIfExists()
     {
-        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Guid = Guid.NewGuid(), Name = "Exists" });
-        var exists = await _repository.ExistsAsync(PortfolioItem.Guid);
+        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Id = Guid.NewGuid(), Name = "Exists" });
+        var exists = await _repository.ExistsAsync(PortfolioItem.Id);
 
         Assert.IsTrue(exists);
     }
@@ -177,8 +177,8 @@ public sealed class PortfolioItemRepositoryTests
     [TestMethod]
     public async Task GetAsync_ReturnsPortfolioItem()
     {
-        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Guid = Guid.NewGuid(), Name = "GetMe" });
-        var result = await _repository.GetAsync(PortfolioItem.Guid);
+        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Id = Guid.NewGuid(), Name = "GetMe" });
+        var result = await _repository.GetAsync(PortfolioItem.Id);
 
         Assert.IsNotNull(result);
         Assert.AreEqual("GetMe", result.Name);
@@ -187,7 +187,7 @@ public sealed class PortfolioItemRepositoryTests
     [TestMethod]
     public async Task UpdateAsync_UpdatesPortfolioItem()
     {
-        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Guid = Guid.NewGuid(), Name = "OldName" });
+        var PortfolioItem = await _repository.AddAsync(new PortfolioItem { Id = Guid.NewGuid(), Name = "OldName" });
         PortfolioItem.Name = "NewName";
         var updated = await _repository.UpdateAsync(PortfolioItem);
 

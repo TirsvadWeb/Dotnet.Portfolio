@@ -11,7 +11,7 @@ using Portfolio.Data;
 namespace Portfolio.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250617140929_Initial")]
+    [Migration("20250618030657_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -148,46 +148,9 @@ namespace Portfolio.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Portfolio.Core.Models.DeveloperInfo", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfileImageUrl")
-                        .HasMaxLength(2048)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SocialBannerUrl")
-                        .HasMaxLength(2048)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("DeveloperInfo");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Description = "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems. Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance. Proficient in Linux and Windows operating systems, managing environments for seamless software execution.",
-                            Name = "Jens Tirsvad Nielsen"
-                        });
-                });
-
             modelBuilder.Entity("Portfolio.Core.Models.Genre", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -196,31 +159,31 @@ namespace Portfolio.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("Genre");
 
                     b.HasData(
                         new
                         {
-                            Guid = new Guid("e3642c4e-db08-47fa-8757-5a62ada67edb"),
+                            Id = new Guid("e3642c4e-db08-47fa-8757-5a62ada67edb"),
                             Name = "Python"
                         },
                         new
                         {
-                            Guid = new Guid("a5ab66c1-30d9-4773-8366-dad834af6bbd"),
+                            Id = new Guid("a5ab66c1-30d9-4773-8366-dad834af6bbd"),
                             Name = "C#"
                         },
                         new
                         {
-                            Guid = new Guid("0936dd59-5f27-4efd-b415-05f0bb817ee2"),
+                            Id = new Guid("0936dd59-5f27-4efd-b415-05f0bb817ee2"),
                             Name = "Blazor"
                         });
                 });
 
             modelBuilder.Entity("Portfolio.Core.Models.PortfolioItem", b =>
                 {
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -242,18 +205,55 @@ namespace Portfolio.Data.Migrations
                         .HasMaxLength(2048)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("PortfolioItem");
 
                     b.HasData(
                         new
                         {
-                            Guid = new Guid("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
+                            Id = new Guid("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
                             Description = "A modern Blazor WebAssembly application for showcasing software projects and skills. Features include interactive project listings, technology tagging, and direct source code links. Designed for developers to present their work in a clean, responsive, and easily extensible format.",
                             GenreTags = "[\"A5AB66C1-30D9-4773-8366-DAD834AF6BBD\",\"0936DD59-5F27-4EFD-B415-05F0BB817EE2\"]",
                             Name = "Portfolio Web application",
                             SourceLink = "https://portfolio.tirsvad.dk/"
+                        });
+                });
+
+            modelBuilder.Entity("Portfolio.Core.Models.PortfolioPerson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SocialBannerUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeveloperInfo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f1fbbdf6-af0e-43a8-935e-7d59e091a388"),
+                            Description = "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems. Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance. Proficient in Linux and Windows operating systems, managing environments for seamless software execution.",
+                            Name = "Jens Tirsvad Nielsen"
                         });
                 });
 
@@ -319,6 +319,24 @@ namespace Portfolio.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "875a25fd-216e-48c1-bb72-99559cbd1bed",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "40bf735b-6e37-44d0-a6e5-4dd8d58e990b",
+                            Email = "jenstirsvad@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "JENSTIRSVAD@GMAIL.COM",
+                            NormalizedUserName = "JENSTIRSVAD@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAXfEmM1tC+eQ69Lf2KbruY7dC/o/aA0bVrguuazN+CkIq8sqMivBeoWyZ7f/2sYUg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "NEVEOGGL4VPHGJ5M5SGEKJVCARFYRFYQ",
+                            TwoFactorEnabled = false,
+                            UserName = "jenstirsvad@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

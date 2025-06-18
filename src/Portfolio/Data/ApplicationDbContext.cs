@@ -7,22 +7,22 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<Core.Models.Genre> Genre => Set<Core.Models.Genre>();
     public DbSet<Core.Models.PortfolioItem> PortfolioItem => Set<Core.Models.PortfolioItem>();
-    public DbSet<Core.Models.DeveloperInfo> DeveloperInfo => Set<Core.Models.DeveloperInfo>();
+    public DbSet<Core.Models.PortfolioPerson> DeveloperInfo => Set<Core.Models.PortfolioPerson>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
         builder.Entity<Core.Models.Genre>().HasData(
-            new Core.Models.Genre { Guid = Guid.Parse("e3642c4e-db08-47fa-8757-5a62ada67edb"), Name = "Python" },
-            new Core.Models.Genre { Guid = Guid.Parse("a5ab66c1-30d9-4773-8366-dad834af6bbd"), Name = "C#" },
-            new Core.Models.Genre { Guid = Guid.Parse("0936dd59-5f27-4efd-b415-05f0bb817ee2"), Name = "Blazor" }
+            new Core.Models.Genre { Id = Guid.Parse("e3642c4e-db08-47fa-8757-5a62ada67edb"), Name = "Python" },
+            new Core.Models.Genre { Id = Guid.Parse("a5ab66c1-30d9-4773-8366-dad834af6bbd"), Name = "C#" },
+            new Core.Models.Genre { Id = Guid.Parse("0936dd59-5f27-4efd-b415-05f0bb817ee2"), Name = "Blazor" }
             );
 
         builder.Entity<Core.Models.PortfolioItem>().HasData(
             new Core.Models.PortfolioItem
             {
-                Guid = Guid.Parse("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
+                Id = Guid.Parse("0577fbae-b2c8-4807-bb32-3c6f3e80af29"),
                 Name = "Portfolio Web application",
                 Description = "A modern Blazor WebAssembly application for showcasing software projects and skills." +
                 " Features include interactive project listings, technology tagging, and direct source code links." +
@@ -35,13 +35,33 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             }
         );
 
-        builder.Entity<Core.Models.DeveloperInfo>().HasData(
-            new Core.Models.DeveloperInfo
+        builder.Entity<Core.Models.PortfolioPerson>().HasData(
+            new Core.Models.PortfolioPerson
             {
-                ID = 1,
+                Id = Guid.Parse("f1fbbdf6-af0e-43a8-935e-7d59e091a388"),
                 Name = "Jens Tirsvad Nielsen",
-                Description = "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems. Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance. Proficient in Linux and Windows operating systems, managing environments for seamless software execution."
+                Description = "Software Engineer Skilled in C#, and Python, with a strong foundation in web development and backend systems." +
+                " Experienced in configuring and optimizing web servers, ensuring efficient deployment and performance." +
+                " Proficient in Linux and Windows operating systems, managing environments for seamless software execution."
+            }
+            );
 
+        builder.Entity<ApplicationUser>().HasData(
+            new ApplicationUser
+            {
+                Id = "875a25fd-216e-48c1-bb72-99559cbd1bed",
+                UserName = "jenstirsvad@gmail.com",
+                NormalizedUserName = "JENSTIRSVAD@GMAIL.COM",
+                Email = "jenstirsvad@gmail.com",
+                NormalizedEmail = "JENSTIRSVAD@GMAIL.COM",
+                EmailConfirmed = true,
+                PasswordHash = "AQAAAAIAAYagAAAAEAXfEmM1tC+eQ69Lf2KbruY7dC/o/aA0bVrguuazN+CkIq8sqMivBeoWyZ7f/2sYUg==",
+                SecurityStamp = "NEVEOGGL4VPHGJ5M5SGEKJVCARFYRFYQ",
+                ConcurrencyStamp = "40bf735b-6e37-44d0-a6e5-4dd8d58e990b",
+                PhoneNumber = null,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnabled = true
             }
             );
     }
