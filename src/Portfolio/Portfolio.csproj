@@ -48,4 +48,10 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Data\portfolio.db">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

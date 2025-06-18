@@ -68,6 +68,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Tags</label>
+                <br />
                 @if (genres == null)
                 {
                     <div>Loading tags...</div>
@@ -82,7 +83,7 @@
                                    type="checkbox"
                                    checked="@GetIsGenreSelected(g.Id)"
                                    @onchange="e => OnGenreTagChanged(e, g.Id)" />
-                            <label class="form-check-label">@g.Name</label>
+                            <label class="form-check-label">@g.Name <i>(@CountTags(g.Id))</i></label>
                         </div>
                     }
                 }
@@ -95,6 +96,8 @@
 
 @code {
     private IEnumerable<ViewModels.PortfolioItem> portfolioItems = [];
+    private IEnumerable<Core.Models.PortfolioItem> portfolioItemsCore = [];
+
     private Core.Models.PortfolioItem newPortfolioItem = new();
     private List<Core.Models.Genre> genres = [];
 
@@ -102,7 +105,7 @@
     {
         genres = (await genreRepository.GetAllAsync()).ToList();
 
-        var portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
+        portfolioItemsCore = await portfolioItemRepository.GetAllAsync();
         portfolioItems = (await Task.WhenAll(portfolioItemsCore
             .Select(async p => new ViewModels.PortfolioItem
             {
@@ -163,5 +166,10 @@
         }
 
         newPortfolioItem.GenreTags = selected;
+    }
+
+    private int CountTags(Guid genreGuid)
+    {
+        return portfolioItemsCore.Count(item => item.GenreTags != null && item.GenreTags.Contains(genreGuid));
     }
 }
