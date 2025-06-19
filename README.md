@@ -15,7 +15,15 @@ A personal portfolio website built from scratch using [Blazor](https://dotnet.mi
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Download](#download)
+  - [Default user](#default-user)
 - [Customization](#customization)
+  - [Change default user and password](#change-default-user-and-password)
+  - [Update Pages Content](#update-pages-content)
+  - [Add Your Projects and Skills](#add-your-projects-and-skills)
+  - [Customize the Design](#customize-the-design)
+  - [Add or Remove Pages](#add-or-remove-pages)
+  - [Advanced Customization](#advanced-customization)
+  - [Social Media Banner](#social-media-banner)
 - [Releases](#releases)
 - [📂 Folder Overview](#-folder-overview)
 - [Create this structure and project](#create-this-structure-and-project)
@@ -64,32 +72,110 @@ Write-Host "Repository downloaded and extracted to .\$extractPath"
 dotnet ef database update
 ```
 
+### Default user
+
+username: root@localhost.com
+
+password: Secr3t#
+
+**MUST BE CHANGE IN PRODUCTION**
+
 ---
 
 ## Customization
 
 You can easily tailor this portfolio to reflect your own projects, skills, and personal information. Here are some suggestions to help you get started:
 
+1. **Change default user and password**
+   To change the default username and password in ApplicationDbContext.cs, update the UserName, NormalizedUserName, Email, and NormalizedEmail fields for the seeded ApplicationUser.
+   The password is stored as a hash, so you must generate a new hash for your desired password.
+
+   Below is an example of how to change the default user to:
+
+   * Username/Email: admin@example.com
+
+   * Password: MyN3wP@ssw0rd!
+
+   Adjust file **src/Portfolio/Data/ApplicationDbContext.cs** to your need:
+   ``` csharp
+   // ... (existing using statements and namespace)
+
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+    {
+    // ... (DbSet properties)
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        // ... (other seed data)
+
+        builder.Entity<ApplicationUser>().HasData(
+            new ApplicationUser
+            {
+                Id = "69ee11f2-f2f2-457b-bd39-ab573d1b06e5",
+                UserName = "admin@example.com",
+                NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                Email = "admin@example.com",
+                NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                EmailConfirmed = true,
+                PasswordHash = "REPLACE_WITH_NEW_HASH",
+                SecurityStamp = "LXOE2AXKO4PIQQNNXARJYPSCMHARCYRL",
+                ConcurrencyStamp = "ca3be65b-ee92-433a-b05b-eef5a70114b2",
+                PhoneNumber = null,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnabled = true
+            }
+        );
+    }
+   ```
+
+   **Note**
+   How to generate a new password hash:
+
+   1. In a temporary C# console app, use:
+
+   ```csharp
+   var hasher = new PasswordHasher<ApplicationUser>();
+   var hash = hasher.HashPassword(new ApplicationUser(), "MyN3wP@ssw0rd!");
+   Console.WriteLine(hash);
+   ```
+
+   1.	Copy the output and replace "REPLACE_WITH_NEW_HASH" above.
+
+   Summary of changes:
+   *	Updated UserName, NormalizedUserName, Email, and NormalizedEmail.
+   *	You must update PasswordHash to match your new password.
+
+   1. migrate and update database
+
+   ```ps
+   cd src/Portfolio
+   dotnet ef migrations add PortfolioPerson -o ./Data/Migrations
+   dotnet ef database update
+   ```
+
 1. **Update Pages Content**  
    Open the files in the `Pages/` directory. Here you can edit the default text, add new sections, or remove content you don't need. For example, you might want to update your About, Projects, or Contact pages with your own information.
 
-2. **Add Your Projects and Skills**  
+1. **Add Your Projects and Skills**  
    - To showcase your work, add your projects to the relevant section or page. You can create new components or simply edit the existing ones in the `Pages/` or `Components/` folders.
    - List your skills, technologies, or experience in a way that best represents you. This could be a simple list, a set of cards, or any layout you prefer.
 
-3. **Customize the Design**  
+1. **Customize the Design**  
    - Modify styles in the `wwwroot/css` folder to change colors, fonts, or layout to match your personal branding.
    - Update images in the `wwwroot/images` or `Portfolio/images/` folders to use your own photos, logos, or icons.
 
-4. **Add or Remove Pages**  
+1. **Add or Remove Pages**  
    - If you want to add new pages (for example, a Blog or Portfolio page), create a new `.razor` file in the `Pages/` directory and update your navigation menu accordingly.
    - To remove a page, simply delete the corresponding `.razor` file and remove its link from the navigation.
 
-5. **Advanced Customization**  
+1. **Advanced Customization**  
    - If you are comfortable with C#, you can add new components, services, or models in the `Components/`, `Shared/`, or `Data/` folders to extend the site's functionality.
    - Update routing in `App.razor` or `Routes.razor` if you add or remove pages.
 
-6. **Social Media Banner**  
+1. **Social Media Banner**  
    - The portfolio supports a customizable social media banner at the top of the home page.
    - To change the banner, you have two options:
 
@@ -98,7 +184,7 @@ You can easily tailor this portfolio to reflect your own projects, skills, and p
          - Replace the file named `socialMediaBanner.png` with your own banner image.
          - Make sure your new image has the same filename (`socialMediaBanner.png`) or update the image path in your code if you use a different name.
 
-      2. **Use a dynamic image from the database:**  
+      1. **Use a dynamic image from the database:**  
          - Update the `SocialBannerUrl` property in the `DeveloperInfo` table of your database to point to your desired image URL (this can be an external URL or a path to an image in your `wwwroot/images` folder, e.g., `/images/yourBanner.png`).
          - The application will automatically use this URL as the banner if it is set and not empty.
          - You can update this value using a database tool (like SQLite Browser for SQLite) or by adding an admin/edit page in your Blazor app to manage your profile information.
