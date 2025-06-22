@@ -22,6 +22,11 @@ public class PortfolioDbContext : IdentityDbContext
     }
 
     /// <summary>
+    /// Gets or sets the application users in the portfolio.
+    /// </summary>
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+    /// <summary>
     /// Gets or sets the persons in the portfolio.
     /// </summary>
     public DbSet<Person> Persons { get; set; } = default!;
