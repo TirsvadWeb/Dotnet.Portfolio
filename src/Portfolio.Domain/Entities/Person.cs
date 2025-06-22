@@ -25,17 +25,18 @@ public class Person : BaseEntity
     /// </summary>
     public string SocialBannerImage { get; private set; }
 
-    // navigation
+    /// <summary>
+    /// Gets the collection of projects associated with the person.
+    /// </summary>
     public IEnumerable<Project> Projects { get; private set; } = Enumerable.Empty<Project>();
-
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Person"/> class.
     /// </summary>
     /// <param name="fullName">The full name of the person.</param>
     /// <param name="bio">The biography of the person.</param>
-    /// <param name="profileImage">The profile image of the person.</param>
-    /// <param name="socialBannerImage">The social banner image of the person.</param>
+    /// <param name="profileImage">The profile image of the person as a base64 string or URL.</param>
+    /// <param name="socialBannerImage">The social banner image of the person as a base64 string or URL.</param>
     public Person(string fullName, string bio, string profileImage, string socialBannerImage)
     {
         FullName = fullName;

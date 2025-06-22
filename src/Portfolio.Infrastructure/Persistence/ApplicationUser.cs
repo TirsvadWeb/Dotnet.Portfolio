@@ -2,7 +2,10 @@
 
 namespace Portfolio.Infrastructure.Persistence;
 
-// Add profile data for application users by adding properties to the ApplicationUser class
+/// <summary>
+/// Represents an application user with identity and authentication information.
+/// Extend this class to add custom profile data for application users.
+/// </summary>
 public class ApplicationUser : IdentityUser
 {
 }

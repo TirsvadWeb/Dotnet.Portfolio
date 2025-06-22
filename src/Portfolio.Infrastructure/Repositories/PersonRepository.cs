@@ -1,32 +1,49 @@
-﻿// Infrastructure/Repositories/PersonRepository.cs
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Repositories;
 using Portfolio.Domain.Entities;
 using Portfolio.Infrastructure.Persistence;
 
-namespace Portfolio.Infrastructure.Repositories
+namespace Portfolio.Infrastructure.Repositories;
+
+/// <summary>
+/// Repository implementation for managing <see cref="Person"/> entities.
+/// Provides CRUD operations and custom queries for persons in the portfolio context.
+/// </summary>
+public class PersonRepository : BaseRepository<Person>, IPersonRepository
 {
-    // Fix for CS1520: Method must have a return type
-    // The constructor name was incorrect. It should match the class name.
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PersonRepository"/> class.
+    /// </summary>
+    /// <param name="ctx">The <see cref="PortfolioDbContext"/> to use for data access.</param>
+    public PersonRepository(PortfolioDbContext ctx) : base(ctx) { }
 
-    public class PersonRepository : BaseRepository<Person>, IPersonRepository
+    /// <summary>
+    /// Asynchronously retrieves a person by their full name.
+    /// </summary>
+    /// <param name="fullName">The full name of the person.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains the person if found; otherwise, <c>null</c>.
+    /// </returns>
+    public async Task<Person?> GetByFullNameAsync(string fullName)
     {
-        public PersonRepository(PortfolioDbContext ctx) : base(ctx) { }
+        return await _ctx.Persons
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.FullName == fullName);
+    }
 
-        public async Task<Person?> GetByFullNameAsync(string fullName)
-        {
-            return await _ctx.Persons
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.FullName == fullName);
-        }
-
-        public async Task<Person?> GetWithProjectsAsync(Guid id)
-        {
-            return await _ctx.Persons
-                .Include(p => p.Projects)
-                .ThenInclude(p => p.Tags)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == id);
-        }
+    /// <summary>
+    /// Asynchronously retrieves a person by their unique identifier, including their projects and associated tags.
+    /// </summary>
+    /// <param name="id">The unique identifier of the person.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains the person with related projects and tags if found; otherwise, <c>null</c>.
+    /// </returns>
+    public async Task<Person?> GetWithProjectsAsync(Guid id)
+    {
+        return await _ctx.Persons
+            .Include(p => p.Projects)
+            .ThenInclude(p => p.Tags)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 }
