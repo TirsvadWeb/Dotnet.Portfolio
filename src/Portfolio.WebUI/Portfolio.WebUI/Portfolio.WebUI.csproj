@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>logo.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="logo.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
+        <ProjectReference Include="..\Portfolio.WebUI.Client\Portfolio.WebUI.Client.csproj" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Components\Controllers\" />
+    </ItemGroup>
+
+</Project>
